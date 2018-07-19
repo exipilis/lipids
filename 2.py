@@ -3,7 +3,7 @@ from keras import Input, Model
 from keras.callbacks import ModelCheckpoint
 from keras.layers import Dense
 
-data = np.load('data/meat_1fix_der.npy').astype(np.float16)
+data = np.load('data/meat_1fix.npy').astype(np.float16)
 data = np.reshape(data, (-1, 81))
 min_d = np.min(data)
 max_d = np.max(data)

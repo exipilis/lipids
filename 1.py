@@ -31,14 +31,19 @@ def save_tsv():
 def make_umap():
     sns.set(context="paper", style="white")
 
-    data = np.load('data/meat_1fix_der.npy').astype(np.float32)
+    data = np.load('data/meat_1fix.npy').astype(np.float32)
     data = np.reshape(data, (-1, 81))
+    min_d = np.min(data)
+    max_d = np.max(data)
+    data = 2 * (data - min_d) / (max_d - min_d) - 1
+
+    colors = np.sum((data / 2 + 0.5) ** 2, axis=-1)
 
     reducer = umap.UMAP(random_state=42)
     embedding = reducer.fit_transform(data)
 
     fig, ax = plt.subplots(figsize=(12, 10))
-    plt.scatter(embedding[:, 0], embedding[:, 1], cmap="Spectral", s=0.1)
+    plt.scatter(embedding[:, 0], embedding[:, 1], c=colors, cmap="Spectral", s=0.1)
     plt.setp(ax, xticks=[], yticks=[])
     plt.title("UMAP", fontsize=18)
 
