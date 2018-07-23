@@ -12,13 +12,23 @@ def read_files(data_dir):
 
     files.sort(key=lambda s: int(s.split('.')[0].split('_')[-1]))
 
-    images = [imread(data_dir + fn, pilmode='L') for fn in files]
-
-    images = np.array(images)
-
+    images = [np.array(imread(data_dir + fn, pilmode='L'), dtype=np.float32) for fn in files]
     reshaped = np.moveaxis(images, 0, -1)
 
-    np.save('data/meat_1fix.npy', reshaped)
+    print(reshaped.shape)
+
+    np.save('data/meat_1fix_original.npy', reshaped)
+
+    means = [np.mean(img) for img in images]
+    stds = [np.std(img) for img in images]
+
+    images_norm = [(img - means[i]) / stds[i] for i, img in enumerate(images)]
+
+    images_norm = np.array(images_norm)
+
+    reshaped = np.moveaxis(images_norm, 0, -1)
+
+    np.save('data/meat_1fix_m0s1.npy', reshaped)
 
 
 def save_tsv():
@@ -59,7 +69,7 @@ def der():
 
 
 if __name__ == '__main__':
-    # read_files('data/Meat_1fix/')
+    read_files('data/Meat_1fix/')
     # save_tsv()
-    make_umap()
+    # make_umap()
     # der()
