@@ -3,7 +3,7 @@ from keras import Input, Model
 from keras.callbacks import ModelCheckpoint
 from keras.layers import Dense
 
-data = np.load('data/meat_1fix_m0s1.npy').astype(np.float32)
+data = np.load('data/meat_1fix_original.npy').astype(np.float32)
 data = np.reshape(data, (-1, 81))
 norm = np.sqrt(np.sum(data**2, axis=-1)).reshape((-1, 1))
 data = data / norm
